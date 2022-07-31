@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-
+const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 
 const app = express();
@@ -38,15 +38,8 @@ app.get('/api/notes', (req, res) => {
         //load the db
         loadDb();
 
-        let id = 1;
-        const notes = state.map(function(note) {
-            note.id = id;
-            id++;
-            return note;
-        });
-
         //send the notes in the response
-        res.json(notes);
+        res.json(state);
     }
 );
 
@@ -59,6 +52,10 @@ app.post('/api/notes', (req, res) => {
     // Check if there is anything in the request body
     if (req.body) {
         const note = req.body;
+        
+        // Assign an id to notes 
+        note.id = uuidv4();
+        
         state.push(note);
         saveDb();
 
@@ -71,9 +68,19 @@ app.post('/api/notes', (req, res) => {
 app.delete('/api/notes/:id', (req, res) => {
 //delete notes
     loadDb();
+
     const id = req.params.id;
-    const index = id-1;
-    state.splice(index, 1);
+    
+    state = state.filter(function (note) {
+        // If the ID matches the current note, 
+        // do not include it in the new state.
+        if (id !== note.id) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+
     saveDb();
 
     res.send("DELETE Request Called")

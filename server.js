@@ -33,9 +33,6 @@ app.get('/notes', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
 
-// Default route
-app.get('/', (req, res) => res.send('Navigate to /send or /routes'));
-
 app.get('/api/notes', (req, res) => {
         //get notes
         //load the db
@@ -81,6 +78,9 @@ app.delete('/api/notes/:id', (req, res) => {
 
     res.send("DELETE Request Called")
 });
+
+// Default route
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, '/public/index.html')));
 
 
 app.listen(PORT, () =>

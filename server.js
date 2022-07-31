@@ -40,8 +40,16 @@ app.get('/api/notes', (req, res) => {
         //get notes
         //load the db
         loadDb();
+
+        let id = 1;
+        const notes = state.map(function(note) {
+            note.id = id;
+            id++;
+            return note;
+        });
+
         //send the notes in the response
-        res.json(state)
+        res.json(notes);
     }
 );
 

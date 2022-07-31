@@ -62,7 +62,7 @@ app.post('/api/notes', (req, res) => {
         state.push(note);
         saveDb();
 
-        res.json(`Note has been added!`);
+        res.json(note);
     } else {
         res.json('Please fill in the note correctly.');
     }

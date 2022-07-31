@@ -69,15 +69,18 @@ app.post('/api/notes', (req, res) => {
     } else {
         res.json('Please fill in the note correctly.');
     }
-
-    //save the note
-    res.send("POST Request Called")
 });
 
-app.delete('/api/notes/:id', (req, res) =>
+app.delete('/api/notes/:id', (req, res) => {
 //delete notes
+    loadDb();
+    const id = req.params.id;
+    const index = id-1;
+    state.splice(index, 1);
+    saveDb();
+
     res.send("DELETE Request Called")
-);
+});
 
 
 app.listen(PORT, () =>
